@@ -9,7 +9,7 @@ builder.Services.AddDbContext<HotelManagementDbContext>(options =>
     options.UseInMemoryDatabase("HotelManagementDb")
     );
 var app = builder.Build();
-
+ 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
