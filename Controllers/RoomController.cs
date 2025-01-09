@@ -29,16 +29,13 @@ namespace HotelManagement.Controllers
             return View(model);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateRoom([FromForm] RoomViewModel model)
         {
-            System.Diagnostics.Debug.WriteLine($"RoomTypeId: {model.NewRoom.RoomTypeId}");
-            System.Diagnostics.Debug.WriteLine($"RoomFloor: {model.NewRoom.room_floor}");
-            System.Diagnostics.Debug.WriteLine($"RoomNumber: {model.NewRoom.room_number}");
             if (!ModelState.IsValid)
             {
-                
                 foreach (var key in ModelState.Keys)
                 {
                     var errors = ModelState[key].Errors;
@@ -47,20 +44,24 @@ namespace HotelManagement.Controllers
                         System.Diagnostics.Debug.WriteLine($"Validation error on {key}: {error.ErrorMessage}");
                     }
                 }
+
+                model.RoomTypes = _context.RoomTypes.ToList();
+                model.Room = _context.Rooms.Include(r => r.RoomType).ToList();
+                return View("RoomView", model);
             }
-            if (ModelState.IsValid)
+
+            var room = new Room
             {
-                model.NewRoom.RoomType = _context.RoomTypes
-                    .FirstOrDefault(r => r.Id == model.NewRoom.RoomTypeId);
+                RoomTypeId = model.NewRoom.RoomTypeId,
+                room_floor = model.NewRoom.room_floor,
+                room_number = model.NewRoom.room_number
+            };
 
-                _context.Rooms.Add(model.NewRoom);
-                _context.SaveChanges();
+            _context.Rooms.Add(room);
+            _context.SaveChanges();
 
-                return RedirectToAction("RoomView");
-            }
-            model.Room = _context.Rooms.Include(r => r.RoomType).ToList();
-            model.RoomTypes = _context.RoomTypes.ToList();
-            return View("RoomView", model);
+            return RedirectToAction("RoomView");
         }
+
     }
 }

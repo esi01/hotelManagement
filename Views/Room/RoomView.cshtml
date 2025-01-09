@@ -1,5 +1,5 @@
 ﻿@model HotelManagement.Models.RoomViewModel
-
+    
 <div class="text-center">
     <h1 class="display-4">Rooms</h1>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">
@@ -11,7 +11,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add Room </h5>
+                <h5 class="modal-title">Add Room</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -19,7 +19,7 @@
                     @Html.AntiForgeryToken()
                     <div class="mb-3">
                         <label asp-for="NewRoom.RoomTypeId" class="form-label">Choose room type</label>
-                        <select name="NewRoom.RoomTypeId" class="form-select" id="roomType" required>
+                        <select asp-for="NewRoom.RoomTypeId" class="form-select" required>
                             <option value="">Select Room Type</option>
                             @foreach (var roomType in Model.RoomTypes)
                             {
@@ -29,16 +29,15 @@
                         <span asp-validation-for="NewRoom.RoomTypeId" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="NewRoom.room_floor" class="form-label"> Room Floor: </label>
+                        <label asp-for="NewRoom.room_floor" class="form-label">Room Floor:</label>
                         <input asp-for="NewRoom.room_floor" class="form-control" />
                         <span asp-validation-for="NewRoom.room_floor" class="text-danger"></span>
                     </div>
-                   <div class="mb-3">
-                       <label asp-for="NewRoom.room_number" class="form-label">Room Number: </label>
-                       <input asp-for="NewRoom.room_number" class="form-control" />
-                       <span asp-validation-for="NewRoom.room_number" class="text-danger"></span>
-                   </div>
-                   
+                    <div class="mb-3">
+                        <label asp-for="NewRoom.room_number" class="form-label">Room Number:</label>
+                        <input asp-for="NewRoom.room_number" class="form-control" />
+                        <span asp-validation-for="NewRoom.room_number" class="text-danger"></span>
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
