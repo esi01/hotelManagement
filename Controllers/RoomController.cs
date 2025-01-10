@@ -62,6 +62,53 @@ namespace HotelManagement.Controllers
 
             return RedirectToAction("RoomView");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditRoom(Room editRoom)
+        {
+            if (ModelState.IsValid)
+            {
+                var room = _context.Rooms.Include(r => r.RoomType).FirstOrDefault(r => r.Id == editRoom.Id);
+
+                if (room != null)
+                {
+                    room.room_floor = editRoom.room_floor;
+                    room.room_number = editRoom.room_number;
+
+                    
+                    var roomType = _context.RoomTypes.FirstOrDefault(rt => rt.Id == editRoom.RoomType.Id);
+                    if (roomType != null)
+                    {
+                        room.RoomType = roomType;
+                    }
+
+                    _context.SaveChanges();
+                }
+
+                return RedirectToAction("RoomView");
+            }
+
+            var model = new RoomViewModel
+            {
+                Room = _context.Rooms.Include(r => r.RoomType).ToList(),
+                RoomTypes = _context.RoomTypes.ToList(),
+                EditRoom = editRoom
+            };
+
+            return View("RoomView", model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteRoom(int id)
+        {
+            var room = _context.Rooms.Find(id);
+            if (room != null)
+            {
+                _context.Rooms.Remove(room);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("RoomView");
+        }
 
     }
 }

@@ -45,43 +45,41 @@
     </div>
 </div>
 
-@* <div class="modal fade" id="editRoomTypeModal" tabindex="-1" aria-labelledby="editRoomTypeLabel" aria-hidden="true"> *@
-@*     <div class="modal-dialog"> *@
-@*         <div class="modal-content"> *@
-@*             <div class="modal-header"> *@
-@*                 <h5 class="modal-title" id="editRoomTypeLabel">Edit Room Type</h5> *@
-@*                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
-@*             </div> *@
-@*             <div class="modal-body"> *@
-@*                 <form method="post" asp-action="EditRoomType" asp-controller="RoomType"> *@
-@*                     @Html.AntiForgeryToken() *@
-@*                     <input type="hidden" asp-for="EditRoomType.Id" name="EditRoomType.Id" /> *@
-@*                     <div class="mb-3"> *@
-@*                         <label asp-for="EditRoomType.Emer" class="form-label">Name</label> *@
-@*                         <input type="text" asp-for="EditRoomType.Emer" class="form-control" name="EditRoomType.Emer" /> *@
-@*                     </div> *@
-@*                     <div class="mb-3"> *@
-@*                         <label asp-for="EditRoomType.Cmim_baze" class="form-label">Base Price</label> *@
-@*                         <input type="number" asp-for="EditRoomType.Cmim_baze" class="form-control" name="EditRoomType.Cmim_baze" /> *@
-@*                     </div> *@
-@*                     <div class="mb-3"> *@
-@*                         <label asp-for="EditRoomType.Siperfaqe" class="form-label">Area</label> *@
-@*                         <input type="number" asp-for="EditRoomType.Siperfaqe" class="form-control" name="EditRoomType.Siperfaqe" /> *@
-@*                     </div> *@
-@*                     <div class="mb-3"> *@
-@*                         <label asp-for="EditRoomType.Kapacitet" class="form-label">Capacity</label> *@
-@*                         <input type="number" asp-for="EditRoomType.Kapacitet" class="form-control" name="EditRoomType.Kapacitet" /> *@
-@*                     </div> *@
-@*                     <div class="mb-3"> *@
-@*                         <label asp-for="EditRoomType.Pershkrim" class="form-label">Description</label> *@
-@*                         <textarea asp-for="EditRoomType.Pershkrim" class="form-control"></textarea> *@
-@*                     </div> *@
-@*                     <button type="submit" class="btn btn-primary">Save Changes</button> *@
-@*                 </form> *@
-@*             </div> *@
-@*         </div> *@
-@*     </div> *@
-@* </div> *@
+<div class="modal fade" id="editRoomModal" tabindex="-1" aria-labelledby="editRoomLabel" aria-hidden="true"> 
+    <div class="modal-dialog"> 
+         <div class="modal-content"> 
+             <div class="modal-header"> 
+                 <h5 class="modal-title" id="editRoomTypeLabel">Edit Room</h5> 
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+            </div> 
+               <div class="modal-body"> 
+                 <form method="post" asp-action="EditRoom" asp-controller="Room"> 
+                     @Html.AntiForgeryToken() 
+                     <input type="hidden" asp-for="EditRoom.Id" name="EditRoom.Id" /> 
+                     <div class="mb-3">
+                        <label asp-for="EditRoom.RoomType.Id" class="form-label">Room Type</label>
+                        <select asp-for="EditRoom.RoomType.Id" class="form-select" name="EditRoom.RoomType.Id">
+                            <option value="">Change Room Type</option>
+                            @foreach (var roomType in Model.RoomTypes)
+                            {
+                                <option value="@roomType.Id">@roomType.Emer</option>
+                            }
+                        </select>
+                    </div>
+                     <div class="mb-3"> 
+                         <label asp-for="EditRoom.room_floor" class="form-label">Floor</label> 
+                         <input type="number" asp-for="EditRoom.room_floor" class="form-control" name="EditRoom.room_floor" /> 
+                     </div> 
+                     <div class="mb-3"> 
+                         <label asp-for="EditRoom.room_number" class="form-label">Room Number</label> 
+                         <input type="number" asp-for="EditRoom.room_number" class="form-control" name="EditRoom.room_number" /> 
+                     </div> 
+                     <button type="submit" class="btn btn-primary">Save Changes</button> 
+                 </form> 
+             </div> 
+         </div> 
+     </div>
+ </div>
 
 <br />
 
@@ -101,8 +99,8 @@
             <tr>
                 <td>@room.Id</td>
                 <td>@(room.RoomType?.Emer ?? "N/A")</td>
-                <td>@room.room_number</td>
                 <td>@room.room_floor</td>
+                <td>@room.room_number</td>
                 <td>
                     <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                             data-bs-target="#editRoomModal"
@@ -133,12 +131,24 @@
 <script>
         function populateEditModal(room) {
         console.log("Room:", room);
+        $('#editRoomModal input[name="EditRoom.Id"]').val('');
+        $('#editRoomModal input[name="EditRoom.room_floor"]').val('');
+        $('#editRoomModal input[name="EditRoom.room_number"]').val('');
+        $('#editRoomModal select[name="EditRoom.RoomType.Id"]').val('');
 
-        document.getElementById('editRoomId').value = room.id;
-        document.getElementById('editRoomType').value = room.roomTypeId;
-        document.getElementById('editRoomTypeName').textContent = room.roomTypeName;
-        document.getElementById('editRoomNumber').value = room.roomNumber;
-        document.getElementById('editRoomFloor').value = room.roomFloor;
+
+        $('#editRoomModal input[name="EditRoom.Id"]').val(room.id);
+        $('#editRoomModal input[name="EditRoom.room_floor"]').val(room.roomFloor);
+        $('#editRoomModal input[name="EditRoom.room_number"]').val(room.roomNumber);
+
+
+        const dropdown = $('#editRoomModal select[name="EditRoom.RoomType.Id"]');
+        dropdown.val(room.roomTypeId);
+
+        if (!dropdown.val()) {
+            dropdown.val(''); 
+        }
     }
+
 
 </script>
