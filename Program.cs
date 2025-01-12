@@ -5,6 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.RegisterBLLServices(builder.Configuration);
+
 builder.Services.AddDbContext<HotelManagementDbContext>(options => 
     options.UseInMemoryDatabase("HotelManagementDb")
     );

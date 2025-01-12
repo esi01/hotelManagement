@@ -2,9 +2,7 @@
     
 <div class="text-center">
     <h1 class="display-4">Rooms</h1>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">
-        +
-    </button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">+</button>
 </div>
 
 <div class="modal fade" id="addRoomModal" tabindex="-1" aria-labelledby="addRoomLabel" aria-hidden="true">
@@ -15,35 +13,33 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post" asp-action="CreateRoom" asp-controller="Room">
+                <form id="roomForm">
                     @Html.AntiForgeryToken()
                     <div class="mb-3">
-                        <label asp-for="NewRoom.RoomTypeId" class="form-label">Choose room type</label>
-                        <select asp-for="NewRoom.RoomTypeId" class="form-select" required>
+                        <label for="NewRoom_RoomTypeId" class="form-label">Choose room type</label>
+                        <select id="NewRoom_RoomTypeId" class="form-select" required>
                             <option value="">Select Room Type</option>
                             @foreach (var roomType in Model.RoomTypes)
                             {
                                 <option value="@roomType.Id">@roomType.Emer</option>
                             }
                         </select>
-                        <span asp-validation-for="NewRoom.RoomTypeId" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="NewRoom.room_floor" class="form-label">Room Floor:</label>
-                        <input asp-for="NewRoom.room_floor" class="form-control" />
-                        <span asp-validation-for="NewRoom.room_floor" class="text-danger"></span>
+                        <label for="NewRoom_room_floor" class="form-label">Room Floor:</label>
+                        <input id="NewRoom_room_floor" class="form-control" />
                     </div>
                     <div class="mb-3">
-                        <label asp-for="NewRoom.room_number" class="form-label">Room Number:</label>
-                        <input asp-for="NewRoom.room_number" class="form-control" />
-                        <span asp-validation-for="NewRoom.room_number" class="text-danger"></span>
+                        <label for="NewRoom_room_number" class="form-label">Room Number:</label>
+                        <input id="NewRoom_room_number" class="form-control" />
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 @* <div class="modal fade" id="editRoomTypeModal" tabindex="-1" aria-labelledby="editRoomTypeLabel" aria-hidden="true"> *@
 @*     <div class="modal-dialog"> *@
@@ -142,3 +138,38 @@
     }
 
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#submitButton').click(function (event) {
+            event.preventDefault();
+debugger;
+            var roomTypeId = $('#NewRoom_RoomTypeId').val();
+            var roomFloor = $('#NewRoom_room_floor').val();
+            var roomNumber = $('#NewRoom_room_number').val();
+
+            $.ajax({
+                type: "POST",
+                    url: '@Url.Action("CreateRoomSql", "Room")',
+                data: {
+                    RoomTypeId: roomTypeId,
+                    RoomFloor: roomFloor,
+                    RoomNumber: roomNumber
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert('Room created successfully.');
+                        // Optional: reload the page or update the UI
+                    } else {
+                        alert('Failed to create room: ' + response.errors.join(', '));
+                    }
+                },
+                error: function () {
+                    alert('An error occurred.');
+                }
+            });
+        });
+    });
+</script>
+

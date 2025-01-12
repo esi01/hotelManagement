@@ -1,16 +1,18 @@
 ﻿using HotelManagement.Models;
+using HotelManagement.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using hotelManagement.BLL.Services;
 namespace HotelManagement.Controllers
 {
     public class RoomController : Controller
     {
         private readonly HotelManagementDbContext _context;
-
-        public RoomController(HotelManagementDbContext context)
+        private readonly IRoomService roomsService;
+        public RoomController(HotelManagementDbContext context, IRoomService service)
         {
             _context = context;
+            roomsService = service;
         }
         public IActionResult RoomView()
         {
@@ -30,7 +32,33 @@ namespace HotelManagement.Controllers
         }
 
 
+
         [HttpPost]
+        public IActionResult CreateRoomSql(NewRoomDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            roomsService.AddBrand(new hotelManagement.Domain.Models.CreateRoom
+            {
+                RoomFloor = model.RoomFloor,
+                RoomNumber = model.RoomNumber.ToString(),
+                RoomTypeId = model.RoomTypeId,
+            });
+            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                return Json(new { success = true });
+            }
+            return Json(new
+            {
+                success = false,
+                errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+            });
+        }
+
+                [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateRoom([FromForm] RoomViewModel model)
         {
