@@ -38,7 +38,7 @@ namespace HotelManagement.Controllers
                     _context.SaveChanges();
                     return RedirectToAction("RoomTypeView");
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     return RedirectToAction("RoomTypeView");
                 }

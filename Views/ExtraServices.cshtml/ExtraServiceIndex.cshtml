@@ -1,0 +1,36 @@
+@model IEnumerable<HotelManagement.Models.ExtraService>
+
+    @{
+    ViewData["Title"] = "Extra Services";
+    }
+
+    <h1>@ViewData["Title"]</h1>
+
+    <p>
+        <a href="@Url.Action("Create", "ExtraService")" class="btn btn-primary">Create New Extra Service</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.ServiceName)</th>
+                <th>@Html.DisplayNameFor(model => model.ServiceCharge)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ServiceName</td>
+                <td>@item.ServiceCharge</td>
+                <td>
+                    <a href="@Url.Action("Edit", "ExtraService", new { id = item.Id })" class="btn btn-warning">Edit</a>
+                    <form method="post" action="@Url.Action("Delete", "ExtraService", new { id = item.Id })" style="display:inline-block;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>

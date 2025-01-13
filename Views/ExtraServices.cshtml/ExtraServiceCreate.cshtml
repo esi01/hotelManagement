@@ -1,0 +1,21 @@
+@model HotelManagement.Models.ExtraService
+
+@{
+    ViewData["Title"] = "Create Extra Service";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="ServiceName">Service Name</label>
+        <input type="text" id="ServiceName" name="ServiceName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="ServiceCharge">Service Charge</label>
+        <input type="number" id="ServiceCharge" name="ServiceCharge" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Create</button>
+</form>

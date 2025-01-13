@@ -1,0 +1,40 @@
+@model IEnumerable<HotelManagement.Models.RoomRate>
+
+@{
+    ViewData["Title"] = "Room Rates";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a href="@Url.Action("Create", "RoomRate")" class="btn btn-primary">Create New Room Rate</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.RoomType)</th>
+            <th>@Html.DisplayNameFor(model => model.Price)</th>
+            <th>@Html.DisplayNameFor(model => model.WeekendSurcharge)</th>
+            <th>@Html.DisplayNameFor(model => model.HolidaySurcharge)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.RoomType</td>
+                <td>@item.Price</td>
+                <td>@item.WeekendSurcharge</td>
+                <td>@item.HolidaySurcharge</td>
+                <td>
+                    <a href="@Url.Action("Edit", "RoomRate", new { id = item.Id })" class="btn btn-warning">Edit</a>
+                    <form method="post" action="@Url.Action("Delete", "RoomRate", new { id = item.Id })" style="display:inline-block;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
