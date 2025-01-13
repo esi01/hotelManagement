@@ -30,12 +30,12 @@
                     </div>
                     <div class="mb-3">
                         <label asp-for="NewRoom.room_floor" class="form-label">Room Floor:</label>
-                        <input asp-for="NewRoom.room_floor" class="form-control" />
+                        <input asp-for="NewRoom.room_floor" class="form-control" placeholder="Floor" value="" />
                         <span asp-validation-for="NewRoom.room_floor" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label asp-for="NewRoom.room_number" class="form-label">Room Number:</label>
-                        <input asp-for="NewRoom.room_number" class="form-control" />
+                        <input asp-for="NewRoom.room_number" class="form-control" placeholder="Number" value="" />
                         <span asp-validation-for="NewRoom.room_number" class="text-danger"></span>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
