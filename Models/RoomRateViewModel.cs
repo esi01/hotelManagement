@@ -1,5 +1,7 @@
 ﻿using HotelManagement.Models;
 
+namespace HotelManagement.Models;
+
 public class RoomRateViewModel
 {
     public int Id { get; set; }

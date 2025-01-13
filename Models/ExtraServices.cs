@@ -1,5 +1,6 @@
 using HotelManagement.Models;
 
+namespace HotelManagement.Models;
 public class ExtraService
 {
     public int Id { get; set; }
