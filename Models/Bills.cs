@@ -24,7 +24,7 @@ namespace HotelManagement.Models
      
         public void CalculateTotalAmount()
         {
-            TotalAmount = RoomRates.Sum(r => r.Cmimi_baze) + ExtraServices.Sum(s => s.ServiceCharge);
+           // TotalAmount = RoomRates.Sum(r => r.Cmimi_baze) + ExtraServices.Sum(s => s.ServiceCharge);
         }
     }
 }

@@ -13,10 +13,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.RoomType)</th>
+            @* <th>@Html.DisplayNameFor(model => model.RoomType)</th>
             <th>@Html.DisplayNameFor(model => model.Price)</th>
             <th>@Html.DisplayNameFor(model => model.WeekendSurcharge)</th>
-            <th>@Html.DisplayNameFor(model => model.HolidaySurcharge)</th>
+            <th>@Html.DisplayNameFor(model => model.HolidaySurcharge)</th> *@
             <th>Actions</th>
         </tr>
     </thead>
@@ -24,10 +24,10 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.RoomType</td>
+                @* <td>@item.RoomType</td>
                 <td>@item.Price</td>
                 <td>@item.WeekendSurcharge</td>
-                <td>@item.HolidaySurcharge</td>
+                <td>@item.HolidaySurcharge</td> *@
                 <td>
                     <a href="@Url.Action("Edit", "RoomRate", new { id = item.Id })" class="btn btn-warning">Edit</a>
                     <form method="post" action="@Url.Action("Delete", "RoomRate", new { id = item.Id })" style="display:inline-block;">

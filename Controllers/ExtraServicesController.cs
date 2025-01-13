@@ -16,8 +16,8 @@ namespace HotelManagement.Controllers
 
         public IActionResult Index()
         {
-            var extraServices = _context.ExtraServices.ToList();
-            return View(extraServices);
+            //var extraServices = _context.ExtraServices.ToList();
+            return View();
         }
 
         public IActionResult Create()
@@ -33,7 +33,7 @@ namespace HotelManagement.Controllers
             {
                 try
                 {
-                    _context.ExtraServices.Add(extraService);
+                    //_context.ExtraServices.Add(extraService);
                     _context.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -47,12 +47,12 @@ namespace HotelManagement.Controllers
 
         public IActionResult Edit(int id)
         {
-            var extraService = _context.ExtraServices.Find(id);
-            if (extraService == null)
-            {
-                return NotFound();
-            }
-            return View(extraService);
+            //var extraService = _context.ExtraServices.Find(id);
+            //if (extraService == null)
+            //{
+            //    return NotFound();
+            //}
+            return View();
         }
 
         [HttpPost]
@@ -63,7 +63,7 @@ namespace HotelManagement.Controllers
             {
                 try
                 {
-                    _context.ExtraServices.Update(extraService);
+                    //_context.ExtraServices.Update(extraService);
                     _context.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -79,12 +79,12 @@ namespace HotelManagement.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            var extraService = _context.ExtraServices.Find(id);
-            if (extraService != null)
-            {
-                _context.ExtraServices.Remove(extraService);
-                _context.SaveChanges();
-            }
+            //var extraService = _context.ExtraServices.Find(id);
+            //if (extraService != null)
+            //{
+            //    _context.ExtraServices.Remove(extraService);
+            //    _context.SaveChanges();
+            //}
             return RedirectToAction("Index");
         }
     }

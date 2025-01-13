@@ -16,8 +16,8 @@ namespace HotelManagement.Controllers
 
         public IActionResult Index()
         {
-            var bills = _context.Bills.ToList();
-            return View(bills);
+            //var bills = _context.Bills.ToList();
+            return View();
         }
 
         public IActionResult Create(int reservationId)
@@ -38,7 +38,7 @@ namespace HotelManagement.Controllers
                 try
                 {
                     bill.CalculateTotalAmount();
-                    _context.Bills.Add(bill);
+                    //_context.Bills.Add(bill);
                     _context.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -52,12 +52,12 @@ namespace HotelManagement.Controllers
 
         public IActionResult Edit(int id)
         {
-            var bill = _context.Bills.Find(id);
-            if (bill == null)
-            {
-                return NotFound();
-            }
-            return View(bill);
+            //var bill = _context.Bills.Find(id);
+            //if (bill == null)
+            //{
+            //    return NotFound();
+            //}
+            return View();
         }
 
         [HttpPost]
@@ -69,7 +69,7 @@ namespace HotelManagement.Controllers
                 try
                 {
                     bill.CalculateTotalAmount();
-                    _context.Bills.Update(bill);
+                    //_context.Bills.Update(bill);
                     _context.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -85,12 +85,12 @@ namespace HotelManagement.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            var bill = _context.Bills.Find(id);
-            if (bill != null)
-            {
-                _context.Bills.Remove(bill);
-                _context.SaveChanges();
-            }
+            //var bill = _context.Bills.Find(id);
+            //if (bill != null)
+            //{
+            //    _context.Bills.Remove(bill);
+            //    _context.SaveChanges();
+            //}
             return RedirectToAction("Index");
         }
     }
