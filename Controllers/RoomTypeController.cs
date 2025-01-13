@@ -64,7 +64,6 @@ namespace HotelManagement.Controllers
                     if (roomType != null)
                     {
                         roomType.Emer = model.EditRoomType.Emer;
-                        roomType.Cmim_baze = model.EditRoomType.Cmim_baze;
                         roomType.Siperfaqe = model.EditRoomType.Siperfaqe;
                         roomType.Pershkrim = model.EditRoomType.Pershkrim;
                         roomType.Kapacitet = model.EditRoomType.Kapacitet;
@@ -88,13 +87,31 @@ namespace HotelManagement.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteRoomType(int id)
         {
+
+            var associations = new Dictionary<string, bool>
+            {
+                { "Rooms", _context.Rooms.Any(r => r.RoomTypeId == id) },
+                { "RoomRates", _context.RoomRates.Any(rr => rr.RoomTypeId == id) }
+            };
+
+            
+            var associatedEntity = associations.FirstOrDefault(a => a.Value).Key;
+
+            if (!string.IsNullOrEmpty(associatedEntity))
+            {
+                TempData["ErrorMessage"] = $"Cannot delete this room type as it is associated with existing {associatedEntity}.";
+                return RedirectToAction("RoomTypeView");
+            }
+
             var roomType = _context.RoomTypes.Find(id);
             if (roomType != null)
             {
                 _context.RoomTypes.Remove(roomType);
                 _context.SaveChanges();
             }
+
             return RedirectToAction("RoomTypeView");
         }
+
     }
 }

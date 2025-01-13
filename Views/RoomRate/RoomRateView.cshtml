@@ -1,0 +1,159 @@
+﻿
+@model HotelManagement.Models.RoomRateViewModel
+
+<div class="text-center">
+<h1 class="display-4">Room Rates</h1>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomRateModal">
+    +
+</button>
+</div>
+
+<div class="modal fade" id="addRoomRateModal" tabindex="-1" aria-labelledby="addRoomLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Room Rate</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="CreateRoomRate" asp-controller="RoomRate">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label asp-for="NewRoomRate.Name" class="form-label">Room Rate Name: </label>
+                        <input asp-for="NewRoomRate.Name" class="form-control" placeholder="Name" type="text" />
+                        <span asp-validation-for="NewRoomRate.Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NewRoomRate.RoomTypeId" class="form-label">Choose room type</label>
+                        <select asp-for="NewRoomRate.RoomTypeId" class="form-select" required>
+                            <option value="">Select Room Type</option>
+                            @foreach (var roomType in Model.RoomTypes)
+                            {
+                                <option value="@roomType.Id">@roomType.Emer</option>
+                            }
+                        </select>
+                        <span asp-validation-for="NewRoomRate.RoomTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NewRoomRate.Base_price" class="form-label">Room Rate Price: </label>
+                        <input asp-for="NewRoomRate.Base_price" class="form-control" type="number" step="0.1" min="1" placeholder="Price in €" />
+                        <span asp-validation-for="NewRoomRate.Base_price" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditRoomRateModal" tabindex="-1" aria-labelledby="addRoomRateLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Room Rate</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="EditRoomRate" asp-controller="RoomRate">
+                    <input type="hidden" asp-for="EditRoomRate.Id" name="EditRoomRate.Id" />
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label asp-for="EditRoomRate.Name" class="form-label">Room Rate Name: </label>
+                        <input asp-for="EditRoomRate.Name" class="form-control" placeholder="Name" type="text" />
+                        <span asp-validation-for="EditRoomRate.Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="EditRoomRate.RoomTypeId" class="form-label">Choose room type</label>
+                        <select asp-for="EditRoomRate.RoomTypeId" class="form-select" required>
+                            <option value="">Select Room Type</option>
+                            @foreach (var roomType in Model.RoomTypes)
+                            {
+                                <option value="@roomType.Id">@roomType.Emer</option>
+                            }
+                        </select>
+                        <span asp-validation-for="EditRoomRate.RoomTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="EditRoomRate.Base_price" class="form-label">Room Rate Price: </label>
+                        <input asp-for="EditRoomRate.Base_price" class="form-control" type="number" step="0.1" min="1" placeholder="Price in €" />
+                        <span asp-validation-for="EditRoomRate.Base_price" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <td>Id</td>
+        <td>Name</td>
+        <td>Room Type</td>
+        <td>Base Price</td>
+    </thead>
+    <tbody>
+        @foreach (var roomRate in Model.RoomRates){
+            <tr>
+                <td>@roomRate.Id</td>
+                <td>@roomRate.Name</td>
+                <td>@(roomRate.RoomType?.Emer ?? "N/A")</td>
+                <td>@roomRate.Base_price</td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#EditRoomRateModal"
+                            onclick="populateEditModal({
+                                    id: '@roomRate.Id',
+                                    name: '@roomRate.Name',
+                                    roomTypeId: '@(roomRate.RoomType?.Id ?? 0)',
+                                    roomTypeName: '@(roomRate.RoomType?.Emer ?? "")',
+                                    basePrice: '@roomRate.Base_price',
+
+                                })">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+
+                    <form method="post" asp-action="DeleteRoomRate" asp-controller="RoomRate"
+                          style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this room rate?');">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@roomRate.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+
+<script>
+        function populateEditModal(roomRate) {
+        console.log("Room Rate:", roomRate);
+
+        $('#EditRoomRateModal input[name="EditRoomRate.Id"]').val('');
+        $('#EditRoomRateModal select[name="EditRoomRate.RoomTypeId"]').val('');
+        $('#EditRoomRateModal input[name="EditRoomRate.Name"]').val('');
+        $('#EditRoomRateModal input[name="EditRoomRate.Base_price"]').val('');
+       
+
+        $('#EditRoomRateModal input[name="EditRoomRate.Id"]').val(roomRate.id);
+        $('#EditRoomRateModal input[name="EditRoomRate.Name"]').val(roomRate.name);
+        $('#EditRoomRateModal input[name="EditRoomRate.Base_price"]').val(roomRate.basePrice);
+
+       
+       const dropdown = $('#EditRoomRateModal select[name="EditRoomRate.RoomTypeId"]');
+        dropdown.val(roomRate.roomTypeId);
+
+        if (!dropdown.val()) {
+            dropdown.val('');
+        }
+
+    
+    }
+
+
+
+</script>

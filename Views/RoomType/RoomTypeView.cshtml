@@ -6,6 +6,12 @@
         +
     </button>
 </div>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
 <div class="modal fade" id="addRoomTypeModal" tabindex="-1" aria-labelledby="addRoomTypeLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -19,22 +25,17 @@
                     @Html.AntiForgeryToken()
                     <div class="mb-3">
                         <label asp-for="NewRoomType.Emer" class="form-label">Name</label>
-                        <input asp-for="NewRoomType.Emer" class="form-control" />
+                        <input asp-for="NewRoomType.Emer" class="form-control" placeholder="Room Type Name" />
                         <span asp-validation-for="NewRoomType.Emer" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="NewRoomType.Cmim_baze" class="form-label">Base Price</label>
-                        <input asp-for="NewRoomType.Cmim_baze" class="form-control" />
-                        <span asp-validation-for="NewRoomType.Cmim_baze" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
                         <label asp-for="NewRoomType.Siperfaqe" class="form-label">Area</label>
-                        <input asp-for="NewRoomType.Siperfaqe" class="form-control" />
+                        <input asp-for="NewRoomType.Siperfaqe" class="form-control" placeholder="Area in m2" value="" />
                         <span asp-validation-for="NewRoomType.Siperfaqe" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label asp-for="NewRoomType.Kapacitet" class="form-label">Capacity</label>
-                        <input asp-for="NewRoomType.Kapacitet" class="form-control" />
+                        <input asp-for="NewRoomType.Kapacitet" class="form-control" placeholder="No of people" value="" />
                         <span asp-validation-for="NewRoomType.Kapacitet" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
@@ -65,10 +66,6 @@
                         <input type="text" asp-for="EditRoomType.Emer" class="form-control" name="EditRoomType.Emer" />
                     </div>
                     <div class="mb-3">
-                        <label asp-for="EditRoomType.Cmim_baze" class="form-label">Base Price</label>
-                        <input type="number" asp-for="EditRoomType.Cmim_baze" class="form-control" name="EditRoomType.Cmim_baze" />
-                    </div>
-                    <div class="mb-3">
                         <label asp-for="EditRoomType.Siperfaqe" class="form-label">Area</label>
                         <input type="number" asp-for="EditRoomType.Siperfaqe" class="form-control" name="EditRoomType.Siperfaqe" />
                     </div>
@@ -94,7 +91,6 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Base Price</th>
             <th>Area</th>
             <th>Description</th>
             <th>Capacity</th>
@@ -107,7 +103,6 @@
             <tr>
                 <td>@roomType.Id</td>
                 <td>@roomType.Emer</td>
-                <td>@roomType.Cmim_baze</td>
                 <td>@roomType.Siperfaqe</td>
                 <td>@roomType.Pershkrim</td>
                 <td>@roomType.Kapacitet</td>
@@ -117,7 +112,6 @@
                             onclick="populateEditModal({
                                 id: '@roomType.Id',
                                 emer: '@roomType.Emer',
-                                cmim_baze: '@roomType.Cmim_baze',
                                 siperfaqe: '@roomType.Siperfaqe',
                                 kapacitet: '@roomType.Kapacitet',
                                 pershkrim: '@roomType.Pershkrim'
@@ -142,7 +136,6 @@
 
         document.querySelector('[name="EditRoomType.Id"]').value = '';
         document.querySelector('[name="EditRoomType.Emer"]').value = '';
-        document.querySelector('[name="EditRoomType.Cmim_baze"]').value = '';
         document.querySelector('[name="EditRoomType.Siperfaqe"]').value = '';
         document.querySelector('[name="EditRoomType.Kapacitet"]').value = '';
         document.querySelector('[name="EditRoomType.Pershkrim"]').value = '';
@@ -150,7 +143,6 @@
 
         document.querySelector('[name="EditRoomType.Id"]').value = roomType.id;
         document.querySelector('[name="EditRoomType.Emer"]').value = roomType.emer;
-        document.querySelector('[name="EditRoomType.Cmim_baze"]').value = roomType.cmim_baze;
         document.querySelector('[name="EditRoomType.Siperfaqe"]').value = roomType.siperfaqe;
         document.querySelector('[name="EditRoomType.Kapacitet"]').value = roomType.kapacitet;
         document.querySelector('[name="EditRoomType.Pershkrim"]').value = roomType.pershkrim;
