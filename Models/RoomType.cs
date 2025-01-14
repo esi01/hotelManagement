@@ -12,5 +12,6 @@ namespace HotelManagement.Models
         public decimal Siperfaqe { get; set; }
         public string? Pershkrim { get; set; }
         public int Kapacitet { get; set; }
+        public ICollection<RoomRate> RoomRates { get; set; }
     }
 }

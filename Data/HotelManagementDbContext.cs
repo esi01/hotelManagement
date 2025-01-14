@@ -7,6 +7,7 @@ namespace HotelManagement.Models
         public DbSet <RoomType> RoomTypes { get; set; }
         public DbSet <Room> Rooms { get; set; }
         public DbSet <RoomRate> RoomRates { get; set; }
+        public DbSet <RoomRateRange> RoomRateRanges { get; set; }
         public HotelManagementDbContext(DbContextOptions<HotelManagementDbContext> options) : base(options) 
         { 
 
